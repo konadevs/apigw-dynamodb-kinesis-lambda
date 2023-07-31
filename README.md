@@ -61,7 +61,7 @@ curl --location --request POST 'https://<api-gateway-id>.execute-api.<region>.am
    "message": "My First Comment"
 }'                      
 ```
-Amazon API Gateway will add item to the Amazon DynamoDB. Further, Amazon Kinesis Data Streams for DynamoDB captures item-level changes in your table, and replicates the changes to a Kinesis data stream. Further, AWS Lambda will consume changes received from Amazon Kinesis.
+Amazon API Gateway will add item to the Amazon DynamoDB. Further, Amazon Kinesis Data Streams for DynamoDB captures item-level changes in your table, and replicates the changes to a Kinesis data stream. Lastly, AWS Lambda will consume changes received from Amazon Kinesis.
 
 You can review Lambda function's execution logs from the Cloudwatch,
 
