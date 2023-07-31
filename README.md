@@ -51,7 +51,7 @@ From the SAM deploy output in a previous step, you can get the URL of the API Ga
  
 Use your preferred client to send a HTTP request. Use API Gateway Id which you received in the Outputs of SAM deploy.
 
-1. Push single record to kinesis stream
+1. Push an Item in DynamoDB table
 
 ```bash
 curl --location --request POST 'https://<api-gateway-id>.execute-api.<region>.amazonaws.com/v1/comment' \
