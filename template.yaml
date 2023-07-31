@@ -4,7 +4,7 @@ Description: An Amazon API Gateway REST API that integrates with an Amazon Dynam
 Parameters:
   AppName:
     Type: String
-    Default: api-comments #api-music 
+    Default: api-comments 
     Description: Name of application.
   StageName:
     Type: String
@@ -37,7 +37,7 @@ Resources:
   DynamoDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
-      TableName: Comments #Music
+      TableName: Comments
       # A list of attributes that describe the key schema for the DynamoDB table and indexes.
       AttributeDefinitions:
         - AttributeName: id
@@ -85,7 +85,6 @@ Resources:
                 Action:
                   - 'dynamodb:PutItem'
                   - 'dynamodb:Query'
-                # Including * in the resource Arn allows access to the DynamoDB table and indexes
                 Resource: !Sub
                   - '${varTableArn}*'
                   - varTableArn: !GetAtt DynamoDBTable.Arn
@@ -111,16 +110,10 @@ Resources:
       Integration:
         Type: AWS
         Credentials: !GetAtt APIGatewayRole.Arn
-        # Should always be POST when integrating with AWS services
         IntegrationHttpMethod: POST
-        # More info: https://docs.aws.amazon.com/apigateway/api-reference/resource/integration/
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:dynamodb:action/PutItem'
         PassthroughBehavior: WHEN_NO_TEMPLATES
         RequestTemplates:
-          # Build the structure of the request that is sent when calling DynamoDB PutItem
-          # Using single-line, stringified JSON as the mapping template
-          # Example body when making API request: {"artist": "The Beatles", "album": "Abbey Road"}
-          # Use the unique id of the API context variable (eg: $context.requestId) as the DynamoDB item id
           application/json: "{\"TableName\":\"Comments\",\"Item\":{\"id\":{\"S\":\"$context.requestId\"},\"userName\":{\"S\":\"$input.path('$.username')\"},\"message\":{\"S\":\"$input.path('$.message')\"}}}"  
         IntegrationResponses:
             - StatusCode: '200'
@@ -143,3 +136,6 @@ Outputs:
     Value: !Sub 
       - 'https://${ApiId}.execute-api.${AWS::Region}.amazonaws.com/${StageName}'
       - ApiId: !Ref Api
+  LambdaFunction:
+    Description: Lambda Function ARN
+    Value: !GetAtt LambdaConsumer.Arn
