@@ -49,7 +49,7 @@ You can use API Gateway endpoint appeared in Outputs of SAM deployment to make P
 
 From the SAM deploy output in a previous step, you can get the URL of the API Gateway endpoint and Lambda ARN. 
  
-Use your preferred client to send a HTTP request. Use API Gateway Id and Kinesis Stream name which you received in the Outputs of SAM deploy.
+Use your preferred client to send a HTTP request. Use API Gateway Id which you received in the Outputs of SAM deploy.
 
 1. Push single record to kinesis stream
 
